@@ -29,40 +29,50 @@
     .wrapper.orange > div {
         background: orange;
     }
-    .wrapper .wrapper > div {
-        background: greenyellow;
-        color: green;
+    .rotate {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+    .rotate > span {
+        white-space: nowrap;
+        transform: rotate(-90deg);
     }
 </style>
 <div class="wrapper red">
-    <div>
+    <div class="rotate">
         <img class="horse" src="./KD_Horse.png"/>
     </div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    <div class="rotate"><span>FINISH</span></div>
 </div>
 <div class="wrapper orange">
-    <div>
+    <div class="rotate">
         <img class="horse" src="./KD_Horse.png"/>
     </div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    <div class="rotate"><span>FINISH</span></div>
 </div>
 <div class="wrapper yellow">
-    <div>
+    <div class="rotate">
         <img class="horse" src="./KD_Horse.png"/>
     </div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    <div class="rotate"><span>FINISH</span></div>
 </div>
 <div class="wrapper green">
-    <div>
+    <div class="rotate">
         <img class="horse" src="./KD_Horse.png"/>
     </div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    <div class="rotate"><span>FINISH</span></div>
 </div>
 <div class="wrapper blue">
-    <div>
+    <div class="rotate">
         <img class="horse" src="./KD_Horse.png"/>
     </div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    <div class="rotate"><span>FINISH</span></div>
 </div>
 
 <script>
@@ -72,7 +82,12 @@
         var horseDestination = e.target.parentElement.previousElementSibling;
         if (horseDestination) {
             $(horseDestination).html('<img class="horse" src="./KD_Horse.png"/>');
-            $(e.target).remove();
+            // If no next element, add finish line back
+            if (!e.target.parentElement.nextElementSibling) {
+                e.target.parentElement.innerHTML = '<span>FINISH</span>';
+            } else {
+                $(e.target).remove();
+            }
         }
     }
 
@@ -80,11 +95,15 @@
         e.preventDefault();
         if (e.target.className != 'horse') return;
         var horseDestination = e.target.parentElement.nextElementSibling;
-        console.log(horseDestination);
         
         if (horseDestination) {
             $(horseDestination).html('<img class="horse" src="./KD_Horse.png"/>');
-            $(e.target).remove();
+            // If no previous element, add start line back
+            if (!e.target.parentElement.previousElementSibling) {
+                e.target.parentElement.innerHTML = '<span>START</span>';
+            } else {
+                $(e.target).remove();
+            }
         }
     }
 </script>
