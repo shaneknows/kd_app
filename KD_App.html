@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<title>Kentucky Derby</title>
+<style>
+    .wrapper {
+        display: flex;
+    }
+    .wrapper > div {
+        font-size: 4vh;
+        margin: .1em;
+        padding: .3em;
+        border-radius: 3px;
+        flex: 1;
+    }
+    .wrapper.green > div {
+        background: green;
+    }
+    .wrapper.blue > div {
+        background: blue;
+    }
+    .wrapper.red > div {
+        background: red;
+    }
+    .wrapper.yellow > div {
+        background: yellow;
+    }
+    .wrapper.orange > div {
+        background: orange;
+    }
+    .wrapper .wrapper > div {
+        background: greenyellow;
+        color: green;
+    }
+</style>
+<div class="wrapper red">
+    <div>
+        <img class="horse" src="./KD_Horse.png"/>
+    </div>
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+</div>
+<div class="wrapper orange">
+    <div>
+        <img class="horse" src="./KD_Horse.png"/>
+    </div>
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+</div>
+<div class="wrapper yellow">
+    <div>
+        <img class="horse" src="./KD_Horse.png"/>
+    </div>
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+</div>
+<div class="wrapper green">
+    <div>
+        <img class="horse" src="./KD_Horse.png"/>
+    </div>
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+</div>
+<div class="wrapper blue">
+    <div>
+        <img class="horse" src="./KD_Horse.png"/>
+    </div>
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+</div>
+
+<script>
+    window.onclick = (e) => {
+        if (e.target.className != 'horse') return;
+        e.preventDefault();
+        var horseDestination = e.target.parentElement.previousElementSibling;
+        if (horseDestination) {
+            $(horseDestination).html('<img class="horse" src="./KD_Horse.png"/>');
+            $(e.target).remove();
+        }
+    }
+
+    window.oncontextmenu = (e) => {
+        e.preventDefault();
+        if (e.target.className != 'horse') return;
+        var horseDestination = e.target.parentElement.nextElementSibling;
+        console.log(horseDestination);
+        
+        if (horseDestination) {
+            $(horseDestination).html('<img class="horse" src="./KD_Horse.png"/>');
+            $(e.target).remove();
+        }
+    }
+</script>
