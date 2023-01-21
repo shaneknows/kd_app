@@ -37,56 +37,82 @@
     .rotate > span {
         white-space: nowrap;
         transform: rotate(-90deg);
+        font-size: 2vw;
+    }
+    input {
+        font-weight: bold;
     }
 </style>
+<input id="red" value="Red" />
 <div class="wrapper red">
     <div class="rotate">
-        <img class="horse" src="./KD_Horse.png"/>
+        <img data-target="red" class="horse" src="./KD_Horse.png"/>
     </div>
     <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
     <div class="rotate"><span>FINISH</span></div>
 </div>
+<input id="orange" value="Orange" />
 <div class="wrapper orange">
     <div class="rotate">
-        <img class="horse" src="./KD_Horse.png"/>
+        <img data-target="orange" class="horse" src="./KD_Horse.png"/>
     </div>
     <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div class="rotate"><span>FINISH</span></div>
+    <div data-target="orange" class="rotate"><span>FINISH</span></div>
 </div>
+<input id="yellow" value="Yellow" />
 <div class="wrapper yellow">
     <div class="rotate">
-        <img class="horse" src="./KD_Horse.png"/>
+        <img data-target="yellow" class="horse" src="./KD_Horse.png"/>
     </div>
     <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
     <div class="rotate"><span>FINISH</span></div>
 </div>
+<input id="green" value="Green" />
 <div class="wrapper green">
     <div class="rotate">
-        <img class="horse" src="./KD_Horse.png"/>
+        <img data-target="green" class="horse" src="./KD_Horse.png"/>
     </div>
     <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
     <div class="rotate"><span>FINISH</span></div>
 </div>
+<input id="blue" value="Blue" />
 <div class="wrapper blue">
     <div class="rotate">
-        <img class="horse" src="./KD_Horse.png"/>
+        <img data-target="blue" class="horse" src="./KD_Horse.png"/>
     </div>
     <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
     <div class="rotate"><span>FINISH</span></div>
 </div>
 
+<audio id="applause" src="./applause.wav" preload="auto"></audio>
+<audio id="gallop" src="./gallop.wav" preload="auto"></audio>
+
 <script>
+    var redHorse = 'Red';
+    var orangeHorse = 'Orange';
+    var yellowHorse = 'Yellow';
+    var greenHorse = 'Green';
+    var blueHorse = 'Blue';
+
+    function setHorseNames(red, orange, yellow, green, blue) {
+        redHorse = red;
+        orangeHorse = orange;
+        yellowHorse = yellow;
+        greenHorse = green;
+        blueHorse = blue;
+    }
+
     window.onclick = (e) => {
         if (e.target.className != 'horse') return;
         e.preventDefault();
         var horseDestination = e.target.parentElement.previousElementSibling;
         if (horseDestination) {
-            $(horseDestination).html('<img class="horse" src="./KD_Horse.png"/>');
+            $(horseDestination).html(e.target.outerHTML);
             // If no next element, add finish line back
             if (!e.target.parentElement.nextElementSibling) {
                 e.target.parentElement.innerHTML = '<span>FINISH</span>';
             } else {
-                $(e.target).remove();
+                e.target.remove();
             }
         }
     }
@@ -97,13 +123,23 @@
         var horseDestination = e.target.parentElement.nextElementSibling;
         
         if (horseDestination) {
-            $(horseDestination).html('<img class="horse" src="./KD_Horse.png"/>');
-            // If no previous element, add start line back
-            if (!e.target.parentElement.previousElementSibling) {
-                e.target.parentElement.innerHTML = '<span>START</span>';
+            $(horseDestination).html(e.target.outerHTML);
+            e.target.remove();
+            if (horseDestination.className == "rotate") {
+                // Victory!
+                setTimeout(() => {
+                    playSound('applause');
+                    var winner = $(e.target).data('target');
+                    var winnerName = $(`#${winner}`).val();
+                    alert(`${winnerName} WINS!`);
+                }, 10);           
             } else {
-                $(e.target).remove();
+                playSound('gallop');
             }
         }
+    }
+
+    function playSound(effect) {
+        document.getElementById(effect).play();
     }
 </script>
