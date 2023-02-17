@@ -42,66 +42,124 @@
     input {
         font-weight: bold;
     }
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 60%;
+        height: 60%;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: animatetop;
+        animation-duration: 0.4s;
+        text-align:center;
+    }
+
+    /* Add Animation */
+    @-webkit-keyframes animatetop {
+        from {top:-300px; opacity:0} 
+        to {top:0; opacity:1}
+    }
+
+    @keyframes animatetop {
+        from {top:-300px; opacity:0}
+        to {top:0; opacity:1}
+    }
+
+    /* The Close Button */
+    .close {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-header {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+        height: 20%;
+    }
+
+    .modal-body {
+        padding: 2px 16px;
+        height: 60%;
+        align-content: center;
+        display: grid;
+        font-size: xxx-large;
+    }
+
+    .modal-footer {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+        height: 20%;
+    }
 </style>
 <input id="red" value="Red" />
-<div class="wrapper red">
-    <div class="rotate">
-        <img data-target="red" class="horse" src="./KD_Horse.png"/>
-    </div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div class="rotate"><span>FINISH</span></div>
-</div>
+<div class="wrapper red"></div>
 <input id="orange" value="Orange" />
-<div class="wrapper orange">
-    <div class="rotate">
-        <img data-target="orange" class="horse" src="./KD_Horse.png"/>
-    </div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div data-target="orange" class="rotate"><span>FINISH</span></div>
-</div>
+<div class="wrapper orange"></div>
 <input id="yellow" value="Yellow" />
-<div class="wrapper yellow">
-    <div class="rotate">
-        <img data-target="yellow" class="horse" src="./KD_Horse.png"/>
-    </div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div class="rotate"><span>FINISH</span></div>
-</div>
+<div class="wrapper yellow"></div>
 <input id="green" value="Green" />
-<div class="wrapper green">
-    <div class="rotate">
-        <img data-target="green" class="horse" src="./KD_Horse.png"/>
-    </div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div class="rotate"><span>FINISH</span></div>
-</div>
+<div class="wrapper green"></div>
 <input id="blue" value="Blue" />
-<div class="wrapper blue">
-    <div class="rotate">
-        <img data-target="blue" class="horse" src="./KD_Horse.png"/>
-    </div>
-    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    <div class="rotate"><span>FINISH</span></div>
+<div class="wrapper blue"></div>
+
+<button onclick="playSound('bugle');">Call to Post!</button>
+
+<div id="winModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+          <span id="close" class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p id="winnerName" class="winText"></p>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
 </div>
 
 <audio id="applause" src="./applause.wav" preload="auto"></audio>
 <audio id="gallop" src="./gallop.wav" preload="auto"></audio>
+<audio id="bugle" src="./bugle.mp3" preload="auto"></audio>
 
 <script>
-    var redHorse = 'Red';
-    var orangeHorse = 'Orange';
-    var yellowHorse = 'Yellow';
-    var greenHorse = 'Green';
-    var blueHorse = 'Blue';
-
-    function setHorseNames(red, orange, yellow, green, blue) {
-        redHorse = red;
-        orangeHorse = orange;
-        yellowHorse = yellow;
-        greenHorse = green;
-        blueHorse = blue;
-    }
-
+    var modal = document.getElementById("winModal");
+    var winnerNameDisplay = document.getElementById("winnerName");
+    var exitModalButton = document.getElementById("close");
+    var horseColors = ["red", "orange", "yellow", "green", "blue"];
+    
+    populateRows();
+    
+    /* Left click moves the horse back */
     window.onclick = (e) => {
         if (e.target.className != 'horse') return;
         e.preventDefault();
@@ -117,6 +175,7 @@
         }
     }
 
+    /* Right click moves the horse forward */
     window.oncontextmenu = (e) => {
         e.preventDefault();
         if (e.target.className != 'horse') return;
@@ -131,7 +190,7 @@
                     playSound('applause');
                     var winner = $(e.target).data('target');
                     var winnerName = $(`#${winner}`).val();
-                    alert(`${winnerName} WINS!`);
+                    displayWinner(winnerName);
                 }, 10);           
             } else {
                 playSound('gallop');
@@ -139,7 +198,41 @@
         }
     }
 
+    /* Play desired sound effect */
     function playSound(effect) {
         document.getElementById(effect).play();
+    }
+
+    function displayWinner(winnerName) {
+        winnerNameDisplay.innerHTML = `${winnerName} WINS!`;
+        modal.getElementsByClassName("modal-header")[0].style.backgroundColor = winnerName;
+        modal.getElementsByClassName("modal-footer")[0].style.backgroundColor = winnerName;
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    exitModalButton.onclick = function() {
+        resetGame();
+    }
+
+    function resetGame() {        
+        modal.style.display = "none";
+        populateRows();
+    }
+
+    function populateRows() {
+        horseColors.forEach(color => {
+            populateRow(color);
+        });
+    }
+
+    function populateRow(horseColor) {
+        $(`.wrapper.${horseColor}`).html(`
+            <div class="rotate">
+                <img data-target="${horseColor}" class="horse" src="./KD_Horse.png"/>
+            </div>
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            <div class="rotate"><span>FINISH</span></div>        
+        `);
     }
 </script>
