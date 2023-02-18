@@ -188,9 +188,7 @@
                 // Victory!
                 setTimeout(() => {
                     playSound('applause');
-                    var winner = $(e.target).data('target');
-                    var winnerName = $(`#${winner}`).val();
-                    displayWinner(winnerName);
+                    displayWinner($(e.target).data('target'));
                 }, 10);           
             } else {
                 playSound('gallop');
@@ -203,10 +201,11 @@
         document.getElementById(effect).play();
     }
 
-    function displayWinner(winnerName) {
+    function displayWinner(winner) {
+        var winnerName = $(`#${winner}`).val();
         winnerNameDisplay.innerHTML = `${winnerName} WINS!`;
-        modal.getElementsByClassName("modal-header")[0].style.backgroundColor = winnerName;
-        modal.getElementsByClassName("modal-footer")[0].style.backgroundColor = winnerName;
+        modal.getElementsByClassName("modal-header")[0].style.backgroundColor = winner;
+        modal.getElementsByClassName("modal-footer")[0].style.backgroundColor = winner;
         modal.style.display = "block";
     }
 
