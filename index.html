@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="./confetti.js"></script>
 </head>
 <title>Kentucky Derby</title>
 <style>
@@ -159,26 +160,22 @@
     
     populateRows();
     
-    /* Left click moves the horse back */
     window.onclick = (e) => {
         if (e.target.className != 'horse') return;
         e.preventDefault();
-        var horseDestination = e.target.parentElement.previousElementSibling;
-        if (horseDestination) {
-            $(horseDestination).html(e.target.outerHTML);
-            // If no next element, add finish line back
-            if (!e.target.parentElement.nextElementSibling) {
-                e.target.parentElement.innerHTML = '<span>FINISH</span>';
-            } else {
-                e.target.remove();
-            }
-        }
+        moveHorseForward(e);
     }
 
-    /* Right click moves the horse forward */
     window.oncontextmenu = (e) => {
         e.preventDefault();
         if (e.target.className != 'horse') return;
+        moveHorseBackward(e);
+    }
+
+    /**
+     * Event trigger to move horse forward
+     */
+    function moveHorseForward(e) {        
         var horseDestination = e.target.parentElement.nextElementSibling;
         
         if (horseDestination) {
@@ -196,6 +193,19 @@
         }
     }
 
+    function moveHorseBackward(e) {
+        var horseDestination = e.target.parentElement.previousElementSibling;
+        if (horseDestination) {
+            $(horseDestination).html(e.target.outerHTML);
+            // If no next element, add finish line back
+            if (!e.target.parentElement.nextElementSibling) {
+                e.target.parentElement.innerHTML = '<span>FINISH</span>';
+            } else {
+                e.target.remove();
+            }
+        }
+    }
+
     /* Play desired sound effect */
     function playSound(effect) {
         document.getElementById(effect).play();
@@ -207,6 +217,8 @@
         modal.getElementsByClassName("modal-header")[0].style.backgroundColor = winner;
         modal.getElementsByClassName("modal-footer")[0].style.backgroundColor = winner;
         modal.style.display = "block";
+        setConfettiColor(winner);
+        showConfetti();
     }
 
     // When the user clicks on <span> (x), close the modal
@@ -216,6 +228,7 @@
 
     function resetGame() {        
         modal.style.display = "none";
+        removeConfetti();
         populateRows();
     }
 
